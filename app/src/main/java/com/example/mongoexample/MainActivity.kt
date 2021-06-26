@@ -10,7 +10,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import io.realm.mongodb.Credentials
+import io.realm.mongodb.auth.GoogleAuthType
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -23,16 +25,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        googleInstances()
+        binding.googleSignIn.setOnClickListener {
+            signIn()
+        }
+    }
 
+    private fun googleInstances(){
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestServerAuthCode(BuildConfig.GOOGLE_CREDENTIAL)
             .build()
-
         client = GoogleSignIn.getClient(this, googleSignInOptions)
-        binding.googleSignIn.setOnClickListener {
-            signIn()
-        }
     }
 
 
